@@ -15,6 +15,12 @@ const weddingDate=new Date("2026-09-26T10:00:00-04:00").getTime();
 function tick(){const d=weddingDate-Date.now();if(d<=0)return;document.getElementById("days").textContent=String(Math.floor(d/86400000)).padStart(2,"0");document.getElementById("hours").textContent=String(Math.floor((d%86400000)/3600000)).padStart(2,"0");document.getElementById("minutes").textContent=String(Math.floor((d%3600000)/60000)).padStart(2,"0");document.getElementById("seconds").textContent=String(Math.floor((d%60000)/1000)).padStart(2,"0")}tick();setInterval(tick,1000);
 const acceptButton = document.querySelector('[data-attendance="accept"]');
 const declineButton = document.querySelector('[data-attendance="decline"]');
+                                                  const acceptFields = document.getElementById("acceptFields");
+const guestCount = document.getElementById("guestCount");
+const haldiCheck = document.getElementById("haldiCheck");
+const haldiPopup = document.getElementById("haldiPopup");
+const closeHaldi = document.getElementById("closeHaldi");
+const haldiOkay = document.getElementById("haldiOkay");
 
 function chooseAccept(){
 
