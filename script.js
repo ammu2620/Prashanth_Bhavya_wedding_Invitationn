@@ -45,7 +45,32 @@ acceptButton.onclick=chooseAccept;
 declineButton.onclick=chooseDecline;
                                                   
                                                   document.getElementById("minusGuest").addEventListener("click",()=>guestCount.value=Math.max(1,Number(guestCount.value)-1));document.getElementById("plusGuest").addEventListener("click",()=>guestCount.value=Math.min(10,Number(guestCount.value)+1));
-const showHaldi=()=>{haldiPopup.classList.add("show");document.body.classList.add("modal-open")},hideHaldi=()=>{haldiPopup.classList.remove("show");document.body.classList.remove("modal-open")};haldiCheck.addEventListener("change",()=>{if(haldiCheck.checked)showHaldi()});closeHaldi.addEventListener("click",hideHaldi);haldiOkay.addEventListener("click",hideHaldi);
-document.querySelectorAll(".outline-btn").forEach(btn=>btn.addEventListener("click",()=>alert("Venue details will be updated soon.")));
+const showHaldi = () => {
+    haldiPopup.classList.add("show");
+    document.body.classList.add("modal-open");
+};
+
+const hideHaldi = () => {
+    haldiPopup.classList.remove("show");
+    document.body.classList.remove("modal-open");
+};
+
+// Show popup ONLY if guest accepted AND selected Haldi
+haldiCheck.addEventListener("change", () => {
+
+    const accepted =
+        document.querySelector('[data-attendance="accept"]')
+        .classList.contains("active");
+
+    if (accepted && haldiCheck.checked) {
+        showHaldi();
+    }
+
+});
+
+closeHaldi.addEventListener("click", hideHaldi);
+haldiOkay.addEventListener("click", hideHaldi);
+                                                  
+                                                  document.querySelectorAll(".outline-btn").forEach(btn=>btn.addEventListener("click",()=>alert("Venue details will be updated soon.")));
 form.addEventListener("submit",e=>{e.preventDefault();const events=[...document.querySelectorAll('input[name="events"]:checked')].map(i=>i.value);if(attendance==="accept"&&events.length===0){status.textContent="Please select at least one event.";return}const food=document.querySelector('input[name="food"]:checked');const record={submittedAt:new Date().toISOString(),name:document.getElementById("guestName").value.trim(),phone:document.getElementById("phone").value.trim(),attendance,guests:attendance==="accept"?Number(guestCount.value):0,events:attendance==="accept"?events:[],food:attendance==="accept"&&food?food.value:"Not applicable",message:document.getElementById("message").value.trim()};const saved=JSON.parse(localStorage.getItem("weddingRsvps")||"[]");saved.push(record);localStorage.setItem("weddingRsvps",JSON.stringify(saved));status.textContent="";successPopup.classList.add("show");document.body.classList.add("modal-open");form.reset();guestCount.value=1});closeSuccess.addEventListener("click",()=>{successPopup.classList.remove("show");document.body.classList.remove("modal-open")});
 });
