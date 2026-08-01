@@ -13,8 +13,8 @@ function reveal(){if(revealed)return;revealed=true;scratchCanvas.style.transitio
 setupScratch();["mousedown","touchstart"].forEach(n=>scratchCanvas.addEventListener(n,e=>{isDown=true;scratch(e)},{passive:false}));["mousemove","touchmove"].forEach(n=>scratchCanvas.addEventListener(n,scratch,{passive:false}));["mouseup","mouseleave","touchend","touchcancel"].forEach(n=>scratchCanvas.addEventListener(n,()=>isDown=false));revealBtn.addEventListener("click",reveal);window.addEventListener("resize",setupScratch);
 const weddingDate=new Date("2026-09-26T10:00:00-04:00").getTime();
 function tick(){const d=weddingDate-Date.now();if(d<=0)return;document.getElementById("days").textContent=String(Math.floor(d/86400000)).padStart(2,"0");document.getElementById("hours").textContent=String(Math.floor((d%86400000)/3600000)).padStart(2,"0");document.getElementById("minutes").textContent=String(Math.floor((d%3600000)/60000)).padStart(2,"0");document.getElementById("seconds").textContent=String(Math.floor((d%60000)/1000)).padStart(2,"0")}tick();setInterval(tick,1000);
-acceptButton = document.querySelector('[data-attendance="accept"]');
-declineButton = document.querySelector('[data-attendance="decline"]');
+const acceptButton = document.querySelector('[data-attendance="accept"]');
+const declineButton = document.querySelector('[data-attendance="decline"]');
 
 function chooseAccept(){
 
@@ -22,7 +22,6 @@ function chooseAccept(){
     declineButton.classList.remove("active");
 
     acceptFields.classList.remove("hidden");
-
 }
 
 function chooseDecline(){
@@ -33,16 +32,17 @@ function chooseDecline(){
     acceptFields.classList.add("hidden");
 
     document.querySelectorAll('#acceptFields input').forEach(input=>{
-        input.checked=false;
+        input.checked = false;
     });
 
-    guestCount.value=1;
+    guestCount.value = 1;
 
+    haldiPopup.classList.remove("show");
+    document.body.classList.remove("modal-open");
 }
 
-acceptButton.onclick=chooseAccept;
-
-declineButton.onclick=chooseDecline;
+acceptButton.onclick = chooseAccept;
+declineButton.onclick = chooseDecline;
                                                   
                                                   document.getElementById("minusGuest").addEventListener("click",()=>guestCount.value=Math.max(1,Number(guestCount.value)-1));document.getElementById("plusGuest").addEventListener("click",()=>guestCount.value=Math.min(10,Number(guestCount.value)+1));
 const showHaldi = () => {
