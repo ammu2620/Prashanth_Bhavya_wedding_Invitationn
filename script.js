@@ -16,11 +16,11 @@ function tick(){const d=weddingDate-Date.now();if(d<=0)return;document.getElemen
 const acceptButton = document.querySelector('[data-attendance="accept"]');
 const declineButton = document.querySelector('[data-attendance="decline"]');
                                                   const acceptFields = document.getElementById("acceptFields");
-const guestCount = document.getElementById("guestCount");
+/*const guestCount = document.getElementById("guestCount");
 const haldiCheck = document.getElementById("haldiCheck");
 const haldiPopup = document.getElementById("haldiPopup");
 const closeHaldi = document.getElementById("closeHaldi");
-const haldiOkay = document.getElementById("haldiOkay");
+const haldiOkay = document.getElementById("haldiOkay");*/
 
 function chooseAccept(){
 
