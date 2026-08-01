@@ -13,8 +13,38 @@ function reveal(){if(revealed)return;revealed=true;scratchCanvas.style.transitio
 setupScratch();["mousedown","touchstart"].forEach(n=>scratchCanvas.addEventListener(n,e=>{isDown=true;scratch(e)},{passive:false}));["mousemove","touchmove"].forEach(n=>scratchCanvas.addEventListener(n,scratch,{passive:false}));["mouseup","mouseleave","touchend","touchcancel"].forEach(n=>scratchCanvas.addEventListener(n,()=>isDown=false));revealBtn.addEventListener("click",reveal);window.addEventListener("resize",setupScratch);
 const weddingDate=new Date("2026-09-26T10:00:00-04:00").getTime();
 function tick(){const d=weddingDate-Date.now();if(d<=0)return;document.getElementById("days").textContent=String(Math.floor(d/86400000)).padStart(2,"0");document.getElementById("hours").textContent=String(Math.floor((d%86400000)/3600000)).padStart(2,"0");document.getElementById("minutes").textContent=String(Math.floor((d%3600000)/60000)).padStart(2,"0");document.getElementById("seconds").textContent=String(Math.floor((d%60000)/1000)).padStart(2,"0")}tick();setInterval(tick,1000);
-attendanceBtns.forEach(btn=>btn.addEventListener("click",()=>{attendanceBtns.forEach(b=>b.classList.remove("active"));btn.classList.add("active");attendance=btn.dataset.attendance;acceptFields.classList.toggle("hidden",attendance==="decline")}));
-document.getElementById("minusGuest").addEventListener("click",()=>guestCount.value=Math.max(1,Number(guestCount.value)-1));document.getElementById("plusGuest").addEventListener("click",()=>guestCount.value=Math.min(10,Number(guestCount.value)+1));
+acceptButton = document.querySelector('[data-attendance="accept"]');
+declineButton = document.querySelector('[data-attendance="decline"]');
+
+function chooseAccept(){
+
+    acceptButton.classList.add("active");
+    declineButton.classList.remove("active");
+
+    acceptFields.classList.remove("hidden");
+
+}
+
+function chooseDecline(){
+
+    declineButton.classList.add("active");
+    acceptButton.classList.remove("active");
+
+    acceptFields.classList.add("hidden");
+
+    document.querySelectorAll('#acceptFields input').forEach(input=>{
+        input.checked=false;
+    });
+
+    guestCount.value=1;
+
+}
+
+acceptButton.onclick=chooseAccept;
+
+declineButton.onclick=chooseDecline;
+                                                  
+                                                  document.getElementById("minusGuest").addEventListener("click",()=>guestCount.value=Math.max(1,Number(guestCount.value)-1));document.getElementById("plusGuest").addEventListener("click",()=>guestCount.value=Math.min(10,Number(guestCount.value)+1));
 const showHaldi=()=>{haldiPopup.classList.add("show");document.body.classList.add("modal-open")},hideHaldi=()=>{haldiPopup.classList.remove("show");document.body.classList.remove("modal-open")};haldiCheck.addEventListener("change",()=>{if(haldiCheck.checked)showHaldi()});closeHaldi.addEventListener("click",hideHaldi);haldiOkay.addEventListener("click",hideHaldi);
 document.querySelectorAll(".outline-btn").forEach(btn=>btn.addEventListener("click",()=>alert("Venue details will be updated soon.")));
 form.addEventListener("submit",e=>{e.preventDefault();const events=[...document.querySelectorAll('input[name="events"]:checked')].map(i=>i.value);if(attendance==="accept"&&events.length===0){status.textContent="Please select at least one event.";return}const food=document.querySelector('input[name="food"]:checked');const record={submittedAt:new Date().toISOString(),name:document.getElementById("guestName").value.trim(),phone:document.getElementById("phone").value.trim(),attendance,guests:attendance==="accept"?Number(guestCount.value):0,events:attendance==="accept"?events:[],food:attendance==="accept"&&food?food.value:"Not applicable",message:document.getElementById("message").value.trim()};const saved=JSON.parse(localStorage.getItem("weddingRsvps")||"[]");saved.push(record);localStorage.setItem("weddingRsvps",JSON.stringify(saved));status.textContent="";successPopup.classList.add("show");document.body.classList.add("modal-open");form.reset();guestCount.value=1});closeSuccess.addEventListener("click",()=>{successPopup.classList.remove("show");document.body.classList.remove("modal-open")});
